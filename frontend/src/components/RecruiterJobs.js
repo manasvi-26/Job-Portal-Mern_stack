@@ -10,6 +10,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 
+import moment from 'moment'
 
 
 export default class RecruiterJobs extends Component {
@@ -165,8 +166,8 @@ export default class RecruiterJobs extends Component {
                     return(
                         <tr>
                         <td>{this.state.jobs[idx].title}</td>
-                        <td>{this.state.jobs[idx].date}</td>
-                        <td>{this.state.jobs[idx].deadline}</td>
+                        <td>{moment(this.state.jobs[idx].date).format("DD/MM/YY")}</td>
+                        <td>{moment(this.state.jobs[idx].deadline).format("DD/MM/YY")}</td>
                         <td>{this.state.jobs[idx].applicants}</td>
                         <td>{this.state.jobs[idx].positions}</td>
                         <td>

@@ -16,7 +16,8 @@ export default class RecruiterProfile extends Component {
         username:"",
         email:"",
         bio:"",
-        phone :""
+        phone :"",
+        rate : ""
     }
 
     componentDidMount(){
@@ -34,7 +35,8 @@ export default class RecruiterProfile extends Component {
                 this.setState({ username: response.data.username });
                 this.setState({ phone: response.data.phone });
                 this.setState({ bio: response.data.bio });
-                console.log("BIO should be ",response.data.bio)
+                this.setState({ rate: response.data.rate });
+
             })
             .catch(function (error) {
                 console.log(error);
@@ -158,6 +160,12 @@ export default class RecruiterProfile extends Component {
                     <Form.Label>Email Id</Form.Label>
                     <Form inline>
                         <Form.Control type="text" value={this.state.email} className="mr-sm-2"  />
+                    </Form>
+                    </Col>
+                    <Col>
+                    <Form.Label>Rating</Form.Label>
+                    <Form inline>
+                        <Form.Control type="text" value={this.state.rate} className="mr-sm-2"  />
                     </Form>
                     </Col>
                 </Row>

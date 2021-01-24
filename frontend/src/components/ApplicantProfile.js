@@ -24,7 +24,7 @@ export default class ApplicantProfile extends Component {
             skills :[],
             email : "",
             education:[],
-            rating : []
+            rate : ""
         }
 
     componentDidMount() {
@@ -40,7 +40,7 @@ export default class ApplicantProfile extends Component {
             .then(response => {
                 this.setState({ username: response.data.username });
                 this.setState({ education: response.data.education });
-                this.setState({ rating: response.data.rating });
+                this.setState({ rate: response.data.rate });
                 this.setState({ skills: response.data.skills });
             })
             .catch(function (error) {
@@ -77,11 +77,8 @@ export default class ApplicantProfile extends Component {
 
         }
         return true
-
-
-
     }
-     
+
     edit = e =>{
 
         const newUser={
@@ -133,12 +130,6 @@ export default class ApplicantProfile extends Component {
         this.setState({ skills : Newskill })
     }
 
-    deleteRow = e =>{
-            this.setState({
-                skills : this.state.skills.slice(0,-1)
-            });
-    }
-
     addRow=e =>{
 
             const newItem = "";
@@ -170,11 +161,6 @@ export default class ApplicantProfile extends Component {
         this.setState({ education : Newedu })
     }
 
-    deleteRow1 = e =>{
-            this.setState({
-                education : this.state.education.slice(0,-1)
-            });
-    }
 
     addRow1 =e =>{
 
@@ -185,7 +171,9 @@ export default class ApplicantProfile extends Component {
 //***********************************************DISPLAY****************************************************************************************************************/}
 
     render() {
+       
         return (
+            
             <div>
                 <Navbar bg="dark" variant="dark">
                     <Nav className="mr-auto">
@@ -204,6 +192,8 @@ export default class ApplicantProfile extends Component {
                     <Link to="/" className="nav-link">Logout</Link>
                 </Navbar>
                 <br /><br /><br /><br />
+                <div style={{ textAlign: "center" }}><h1>My Profile</h1></div><br></br><br></br>
+
 
 
 {/*****************************************USERNAME & EMAIL*************************************************************************/}
@@ -215,6 +205,7 @@ export default class ApplicantProfile extends Component {
                         <Form.Label><h3>User Name</h3></Form.Label>
                         <Form inline>
                         <RB.FormControl  type="text" onChange = {this.onchange} defaultValue={this.state.username}/>
+                       
                         <Button variant="info" className="btn btn-primary" value="edit" onClick={this.edit}>Edit Username</Button>
                         </Form>
                         </Col>
@@ -224,12 +215,19 @@ export default class ApplicantProfile extends Component {
                         <RB.FormControl  type="text" label="email" defaultValue={this.state.email}/>
                         </Form>
                         </Col>
+                        <Col>
+                        <Form.Label><h3>Rating</h3></Form.Label>
+                        <Form inline>
+                        
+                        <RB.FormControl  type="text" label="rating" defaultValue={this.state.rate}/>
+                        </Form>
+                        </Col>
                     </Row>
                 </Form>
                 <br></br><br></br><br></br>
 
 {/***********************************************SKILLS****************************************************************************************************************/}
-                <div style={{width:"500px" ,margin:"0 auto"}}>
+               
                 <table striped bordered hover variant="dark">
                     <thead>
                         <tr>
@@ -252,10 +250,9 @@ export default class ApplicantProfile extends Component {
                 </table>
                 <br></br>
                
-                <button onClick={this.addRow} className="btn btn-primary">Add Row</button>{" "}
-                <Button variant="warning" className="btn btn-primary" value="edit" onClick={this.edit}>SAVE CHANGES</Button>
-                </div>
-                <br></br><br></br>
+                <button onClick={this.addRow} className="btn btn-primary">Add Row</button>
+                
+                <br></br><br></br><br></br>
                 
 {/***********************************************EDUCATION****************************************************************************************************************/}
                 <h3>Education</h3><br></br>
@@ -284,13 +281,15 @@ export default class ApplicantProfile extends Component {
                     </tbody>
                 </table>
                 <br></br>
-                <button onClick={this.addRow1} className="btn btn-primary">Add Row</button>{"  "}
-                <Button variant="warning" className="btn btn-primary" value="edit" onClick={this.edit}>SAVE CHANGES</Button>
+                <button onClick={this.addRow1} className="btn btn-primary">Add Row</button>
+                <br></br><br></br>
+                <div style={{width:"500px" ,margin:"0 auto"}}>
+                <Button variant="warning" className="btn btn-primary" value="edit" onClick={this.edit} size="lg">SAVE CHANGES</Button>
+
+                </div>
 
                 <br/><br/>
-
-                        
-                
+       
             </div>
         )
     }

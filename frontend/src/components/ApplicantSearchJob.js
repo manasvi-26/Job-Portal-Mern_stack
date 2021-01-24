@@ -151,8 +151,7 @@ export default class ApplicantSearchJob extends Component {
             email_recruiter : job.email,
             sop :sopText,
             job_id : job.job_id,
-            username: this.state.username,
-            join : new Date()
+            username: this.state.username
         }
         console.log(this.state.username)
         //add application in database
@@ -322,7 +321,7 @@ export default class ApplicantSearchJob extends Component {
                                     <td>{job.username}</td>
                                     <td>{job.salary}</td>
                                     <td>{job.duration}</td>
-                                    <td>{job.deadline}</td>
+                                    <td>{moment(job.deadline).format("DD/MM/YY")}</td>
 
                                     {select === 'applied' && <td><Button variant="success" className="btn btn-primary" value="edit">Applied</Button></td>}
                                     {select === 'full' &&  <td><Button variant="info" className="btn btn-primary" value="edit">Full</Button></td>}

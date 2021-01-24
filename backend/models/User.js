@@ -24,10 +24,14 @@ const UserSchema = new Schema({
     education :{
       type : [{
         institute : String,
-        startyear : Date,
-        endyear: Date
+        startyear : String,
+        endyear: String
       }],
       default : []
+    },
+    rate :{
+      type : Number,
+      default : 0
     },
     skills :{
       type : [String],

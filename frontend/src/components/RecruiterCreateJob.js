@@ -19,8 +19,8 @@ export default class CreateJob extends Component {
         title: "",
         applicants: "",
         positions: "",
-        type: "",
-        duration: "",
+        type: "Full-time",
+        duration: "1",
         salary: "",
         deadline: "",
         skills :""
@@ -72,6 +72,7 @@ export default class CreateJob extends Component {
         console.log()
         if (!username || !email || !title || !applicants || !positions || !type || !duration || !salary || !deadline ||!skills)
             alert("Enter all the fields!")
+        else if(salary - '0' < 0)alert('Salary cant be negative!!')
         else {
             axios.post("http://localhost:5000/recruiter/createJob", newJob).then(res => {
                 alert("Created Job")
@@ -82,8 +83,8 @@ export default class CreateJob extends Component {
             title: "",
             applicants: "",
             positions: "",
-            type: "",
-            duration: "",
+            type: "Full-time",
+            duration: "1",
             salary: "",
             deadline: "",
             skills : ""
@@ -119,7 +120,8 @@ export default class CreateJob extends Component {
 
                         <Form.Group as={Col} controlId="formGridState">
                             <Form.Label>Job Type</Form.Label>
-                            <Form.Control as="select" name="type" defaultValue="Full-time" defaultValue=""onChange={this.onchange} value={this.state.type}>
+                            <Form.Control as="select" name="type" defaultValue="Full-time" defaultValue=""onChange={this.onchange} value={this.state.type} >
+                              
                                 <option>Full-time</option>
                                 <option>Part-time</option>
                                 <option>Work from Home</option>
@@ -128,8 +130,9 @@ export default class CreateJob extends Component {
                     </Form.Row>
                     <Form.Row>
                         <Form.Group as={Col} controlId="formGridState">
-                            <Form.Label>Duration</Form.Label>
+                            <Form.Label>Duration (in months)</Form.Label>
                             <Form.Control as="select" name="duration" defaultValue="1" onChange={this.onchange} value={this.state.duration}>
+                              
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -151,12 +154,12 @@ export default class CreateJob extends Component {
                         </Form.Group>
                     </Form.Row>
                     <Form.Group  controlId="formGridCity">
-                    <Form.Label>Salary</Form.Label>
+                    <Form.Label>Salary (per month)</Form.Label>
                     <Form.Control type="text" name="salary" placeholder="Enter salary" onChange={this.onchange} value={this.state.salary} />
                     </Form.Group>
                     <Form.Group controlId="formGridCity">
                     <Form.Label>Deadline</Form.Label>
-                    <Form.Control type="text" name="deadline" placeholder="Enter deadline for application" onChange={this.onchange} value={this.state.deadline}/>
+                    <Form.Control type="date" name="deadline" placeholder="Enter deadline for application" onChange={this.onchange} value={this.state.deadline}/>
                     </Form.Group>
                     <Form.Group controlId="formGridCity">
                     <Form.Label>Skills</Form.Label>

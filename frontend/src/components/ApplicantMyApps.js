@@ -17,6 +17,8 @@ import { Col, Row } from "react-bootstrap";
 import Typography from "@material-ui/core/Typography";
 import SopModal from './Modal'
 
+import moment from 'moment'
+
 export default class ApplicantMyApps extends Component {
 
     state ={
@@ -86,7 +88,7 @@ export default class ApplicantMyApps extends Component {
                     return(
                         <tr>
                             <td>{this.state.apps[idx].title}</td>
-                            <td>{this.state.apps[idx].join}</td>
+                            <td>{moment(this.state.apps[idx]).join.format("DD/MM/YY")}</td>
                             <td>{this.state.apps[idx].salary}</td>
                             <td>{this.state.apps[idx].recruiter}</td>
                             

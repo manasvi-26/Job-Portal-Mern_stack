@@ -10,6 +10,8 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 
+import moment from 'moment'
+
 
 import RecruiterJobs from './RecruiterJobs'
 
@@ -74,15 +76,16 @@ export default class RecruiterViewApps extends Component {
     }
 
     accept = (idx)=>()=>{
-        
+        const copy = [...this.state.apps]
+           copy[idx].status= 'Accepted'
+           copy[idx].join = new Date()
+           this.setState({apps : copy})
+
         console.log("GIVEN ACCEPT APP DATA..",this.state.apps[idx])
         
         axios
         .post("http://localhost:5000/application/accept",this.state.apps[idx])
         .then(response => {
-           const copy = [...this.state.apps]
-           copy[idx].status= 'Accepted'
-           this.setState({apps : copy})
            console.log(response.data)
            alert("Application has been accepted!!")
            if(response.data == "1"){
@@ -154,7 +157,7 @@ export default class RecruiterViewApps extends Component {
                         return(
                             <tr>
                             <td>{this.state.apps[idx].username}</td>
-                            <td>{this.state.apps[idx].date}</td>
+                            <td>{moment(this.state.apps[idx].date).format("DD/MM/YY")}</td>
                             <td>{this.state.apps[idx].sop}</td>
                            
                             
