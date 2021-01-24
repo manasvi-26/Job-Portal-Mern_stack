@@ -137,7 +137,8 @@ export default class RecruiterEmployees extends Component {
                     <Link to="/" className="nav-link">Logout</Link> 
                 </Navbar>   
                 <br></br><br></br><br></br>  
-
+                <h1 style={{ textAlign: "center" }}>View My Employees</h1><br />
+                <br></br><br></br>
                 <table className="table table-striped">
                     <thead>
                         <tr>

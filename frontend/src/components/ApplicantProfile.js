@@ -12,6 +12,10 @@ import Box from '@material-ui/core/Box';
 import Form from 'react-bootstrap/Form'
 import axios from 'axios';
 import Button from 'react-bootstrap/Button'
+import { Col, Row } from "react-bootstrap";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 
 export default class ApplicantProfile extends Component {
 
@@ -19,7 +23,8 @@ export default class ApplicantProfile extends Component {
             username : "",
             skills :[],
             email : "",
-            education:[{}]
+            education:[],
+            rating : []
         }
 
     componentDidMount() {
@@ -42,9 +47,41 @@ export default class ApplicantProfile extends Component {
                 console.log(error);
             });
     }
-     
-     
 
+    check(newUser){
+
+        //Checking Username:
+        if(newUser.username == ''){
+            alert("Username cant be empty!!")
+            return false
+        }
+
+        const education = newUser.education
+        for(var i in education){
+            if(education[i].institute == ''){
+                alert("Institute Name cant be empty!!")
+                return false
+            }
+            if(education[i].startyear == ''){
+                alert("Start yearcant be empty!!")
+                return false
+            }
+        } 
+        const skills = newUser.skills
+        for(var i in skills){
+            if(skills[i] == ''){
+                alert("Skill field cant be empty!!")
+                return false
+
+            }
+
+        }
+        return true
+
+
+
+    }
+     
     edit = e =>{
 
         const newUser={
@@ -54,25 +91,28 @@ export default class ApplicantProfile extends Component {
             education : this.state.education
         }
 
+        var val = this.check(newUser)
+        if(val == true){
 
-        axios
-        .post("http://localhost:5000/applicant/editProfile", newUser)
-        .then(response =>{
-                alert("Changes saved!!")
-                this.setState({ username: response.data.username, skills : response.data.skills, education:response.data.education  });
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+            axios
+            .post("http://localhost:5000/applicant/editProfile", newUser)
+            .then(response =>{
+                    alert("Changes saved!!")
+                    this.setState({ username: response.data.username, skills : response.data.skills, education:response.data.education  });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
 
-        localStorage.setItem("username", this.state.username);
+            localStorage.setItem("username", this.state.username);
 
-
+        }
     }
 
     onchange = e =>{
         this.setState({username: e.target.value})
     }
+
 //***********************************************SKILLS FUNCTIONS****************************************************************************************************************/}
 
     skillChange = (e,idx)=>{
@@ -110,7 +150,6 @@ export default class ApplicantProfile extends Component {
 
         console.log("value is..",e.target.value)
         console.log("name is ..",e.target.name)
-        console.log("start year",e.target.value.startyear)
 
         const {name , value} = e.target
 
@@ -122,6 +161,8 @@ export default class ApplicantProfile extends Component {
 
         console.log("changing education",this.state.education);
     }
+
+    
 
     removeSpecificEdu = (idx) => () => {
         const Newedu = [...this.state.education]
@@ -168,21 +209,27 @@ export default class ApplicantProfile extends Component {
 {/*****************************************USERNAME & EMAIL*************************************************************************/}
 
 
-                <Form.Label><h3>User Name</h3></Form.Label>
-                <Form inline>
-                <RB.FormControl  type="text" onChange = {this.onchange} defaultValue={this.state.username}/>
-                <Button variant="info" className="btn btn-primary" value="edit" onClick={this.edit}>Edit Username</Button>
+                <Form>
+                    <Row>
+                        <Col>
+                        <Form.Label><h3>User Name</h3></Form.Label>
+                        <Form inline>
+                        <RB.FormControl  type="text" onChange = {this.onchange} defaultValue={this.state.username}/>
+                        <Button variant="info" className="btn btn-primary" value="edit" onClick={this.edit}>Edit Username</Button>
+                        </Form>
+                        </Col>
+                        <Col>
+                        <Form.Label><h3>Email address</h3></Form.Label>
+                        <Form inline>
+                        <RB.FormControl  type="text" label="email" defaultValue={this.state.email}/>
+                        </Form>
+                        </Col>
+                    </Row>
                 </Form>
-                <br/><br></br>
-                <Form.Label><h3>Email address</h3></Form.Label>
-                <Form inline>
-                <RB.FormControl  type="text" label="email" defaultValue={this.state.email}/>
-                </Form>
-
-                <br></br><br></br>
+                <br></br><br></br><br></br>
 
 {/***********************************************SKILLS****************************************************************************************************************/}
-                <form onSubmit = {this.edit}>
+                <div style={{width:"500px" ,margin:"0 auto"}}>
                 <table striped bordered hover variant="dark">
                     <thead>
                         <tr>
@@ -196,8 +243,7 @@ export default class ApplicantProfile extends Component {
                         {this.state.skills.map((skill,idx) =>{
                             return (
                                 <tr>
-                                    <td><input type="text" defaultValue={this.state.skills[idx]} onChange ={(e)=> {this.skillChange(e,idx)}}  /></td>
-                                    <td><Button variant="warning" className="btn btn-primary" value="edit" onClick={this.edit}>Edit Skill</Button></td>
+                                    <td><Form.Control type="text" defaultValue={this.state.skills[idx]} onChange ={(e)=> {this.skillChange(e,idx)} }placeholder="skill name"  /></td>
                                     <td><Button  variant ="danger" className="btn btn-primary" value="edit" onClick={this.removeSpecificSkill(idx)}>Delete Skill</Button></td>
                                 </tr>
                             )
@@ -205,23 +251,20 @@ export default class ApplicantProfile extends Component {
                     </tbody>
                 </table>
                 <br></br>
-                <button onClick={this.addRow} className="btn btn-primary">Add Row</button>
-                <button onClick={this.deleteRow} className="btn btn-danger">Delete Last Row </button>
-                <br/><br/>
-
+               
+                <button onClick={this.addRow} className="btn btn-primary">Add Row</button>{" "}
                 <Button variant="warning" className="btn btn-primary" value="edit" onClick={this.edit}>SAVE CHANGES</Button>
-                        
-                </form>
+                </div>
                 <br></br><br></br>
                 
 {/***********************************************EDUCATION****************************************************************************************************************/}
-                <form onSubmit = {this.edit}>
+                <h3>Education</h3><br></br>
                 <table striped bordered hover variant="dark">
                     <thead>
                         <tr>
-                            <th><h3>Education</h3></th>
-                            <th></th>
-                            <th></th>
+                            <th>Institute Name</th>
+                            <th>Start Year</th>
+                            <th>End Year</th>
                         </tr>
                     </thead>
                     <hr></hr>
@@ -229,10 +272,11 @@ export default class ApplicantProfile extends Component {
                         {this.state.education.map((item,idx) =>{
                             return (
                                 <tr>
-                                    <td><input type="text" name="institute" defaultValue={this.state.education[idx].institute} onChange ={(e)=> {this.eduChange(e,idx)}}  /></td>
-                                    <td><input type="text" name="startyear" defaultValue={this.state.education[idx].startyear} onChange ={(e)=> {this.eduChange(e,idx)}}  /></td>
-                                    <td><input type="text" name="endyear" defaultValue={this.state.education[idx].endyear} onChange ={(e)=> {this.eduChange(e,idx)}}  /></td>
-                                    <td><Button variant="warning" className="btn btn-primary" value="edit" onClick={this.edit}>Edit Education Field</Button></td>
+                                    <td><Form.Control type="text" name="institute" defaultValue={this.state.education[idx].institute} onChange ={(e)=> {this.eduChange(e,idx)}} placeholder="institute name"  /></td>
+                                    <td> <Form.Control type="date" name="startyear" defaultValue={this.state.education[idx].startyear} onChange ={(e)=> {this.eduChange(e,idx)}}  /></td>
+                                    <td> <Form.Control type="date" name="endyear" defaultValue={this.state.education[idx].endyear} onChange ={(e)=> {this.eduChange(e,idx)}}  /></td>
+                                    
+                                    
                                     <td><Button  variant ="danger" className="btn btn-primary" value="edit" onClick={this.removeSpecificEdu(idx)}>Delete Education Field</Button></td>
                                 </tr>
                             )
@@ -240,13 +284,12 @@ export default class ApplicantProfile extends Component {
                     </tbody>
                 </table>
                 <br></br>
-                <button onClick={this.addRow1} className="btn btn-primary">Add Row</button>
-                <button onClick={this.deleteRow1} className="btn btn-danger">Delete Last Row </button>
+                <button onClick={this.addRow1} className="btn btn-primary">Add Row</button>{"  "}
+                <Button variant="warning" className="btn btn-primary" value="edit" onClick={this.edit}>SAVE CHANGES</Button>
+
                 <br/><br/>
 
-                <Button variant="warning" className="btn btn-primary" value="edit" onClick={this.edit}>SAVE CHANGES</Button>
                         
-                </form>
                 
             </div>
         )
