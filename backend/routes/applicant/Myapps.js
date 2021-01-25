@@ -11,10 +11,6 @@ router.post('/',async(req,res) =>{
     const apps =  await Application.find(filter)
     const job_ids =  apps.map(app => app.job_id)
     const jobs = await Job.find({_id : {"$in" : job_ids}})
-    const user_emails = apps.map(app => app.email_recruiter)
-    const users = await User.find({email : {"$in" : user_emails}})
-
-
     var arr = []
     apps.map((app,idx) =>{
         jobs.map((job)=>{
@@ -29,20 +25,14 @@ router.post('/',async(req,res) =>{
                     rec_email : job.email,
                     recruiter : job.username,
                     job_id : app.job_id,
-                    salary : job.salary
+                    salary : job.salary,
+                    rating : job.rating,
+                    rate : job.rate
                 }
                 arr.push(obj)
                 return obj;
             }
         })
-        users.map((user) =>{
-            if(app.email_recruiter == user.email){
-                arr[idx].rating = user.rating
-                arr[idx].rate = user.rate 
-                return;
-            }
-        })
-
     })
     console.log("this should be printed",arr);
     return res.json(arr)

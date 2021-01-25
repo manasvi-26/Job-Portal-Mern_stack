@@ -172,7 +172,8 @@ export default class RecruiterViewApps extends Component {
                             <td >{moment(this.state.apps[idx].date).format("DD/MM/YY")}</td>
                             <td >{this.state.apps[idx].sop}</td>
                             
-                            {this.state.apps[idx].education.map((edu,idx) =>{
+                            {this.state.apps[idx].education.length!==0 && 
+                            this.state.apps[idx].education.map((edu,idx) =>{
                                 return(
                                     <div>
                                     <td><b>Institute</b><br/>{edu.institute}</td>
@@ -181,7 +182,8 @@ export default class RecruiterViewApps extends Component {
                                     </div>
                                 )
                             })}
-                            <td>{skills}</td>
+                            {this.state.apps[idx].education.length=== 0 &&<td>Not Filled</td> }
+                            <td>{skills===''? "Not Filled": skills}</td>
                             
 
 

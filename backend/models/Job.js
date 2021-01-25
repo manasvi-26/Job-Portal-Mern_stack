@@ -46,7 +46,15 @@ const JobSchema = new Schema({
         type : Number,
         required :true
     },
-    rating:{
+    rating :{
+      type : [{
+        email : String,
+        value : {
+          type : Number
+        } 
+      }]
+    },
+    rate :{
         type : Number,
         default : 0
     },

@@ -21,4 +21,25 @@ router.post('/',(req,res) =>{
     
 })
 
+router.post('/job',(req,res) =>{
+    console.log("GIVEN RATINGSSSSSSS ",req.body.job_id)
+    Job.findOne({_id : req.body.job_id},function(err,job){
+
+        if(err)console.log(err)
+        else{
+            job.rating = req.body.rating
+            job.rate = req.body.rate
+            job.save()
+                .then(job=>{
+                    res.json(job)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+    })
+    
+})
+
 module.exports = router;
+
