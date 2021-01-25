@@ -134,6 +134,9 @@ export default class RecruiterProfile extends Component {
                         <li className="navbar-item">
                             <Link to="/ActiveJobs" className="nav-link">Job Listings</Link>
                         </li>
+                        <li className="navbar-item">
+                            <Link to="Employees" className="nav-link">My Employees</Link>
+                        </li>  
                     </Nav>
                     <Link to="/" className="nav-link">Logout</Link>
                 </Navbar>

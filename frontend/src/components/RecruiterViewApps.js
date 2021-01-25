@@ -108,7 +108,7 @@ export default class RecruiterViewApps extends Component {
             console.log(error);
         });
 
-
+ 
 
     }
 

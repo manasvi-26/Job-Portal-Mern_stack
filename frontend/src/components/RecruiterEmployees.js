@@ -120,19 +120,19 @@ export default class RecruiterEmployees extends Component {
                 
                 <Navbar bg="dark" variant="dark">
                     <Nav className="mr-auto">
-                        <Link to="/Employees" className="navbar-brand">My Employees</Link>
-                        <li className="navbar-item">
-                            <Link to="/RecruiterHome" className="nav-link">Home</Link>
-                        </li>
-                        <li className="navbar-item">
-                            <Link to="/ActiveJobs" className="nav-link">Job Listings</Link>
-                        </li>
-                        <li className="navbar-item">
-                            <Link to="/CreateJob" className="nav-link">Create Job</Link>
-                        </li>
-                        <li className="navbar-item">
-                            <Link to="/RecruiterProfile" className="nav-link">My Profile</Link>
-                        </li>
+                    <Link to="/Employees" className="navbar-brand">My Employees</Link>
+                    <li className="navbar-item">
+                        <Link to="/RecruiterHome" className="nav-link">Home</Link>
+                    </li>
+                    <li className="navbar-item">
+                        <Link to="/ActiveJobs" className="nav-link">Job Listings</Link>
+                    </li>     
+                    <li className="navbar-item">
+                        <Link to="/CreateJob" className="nav-link">Create Job</Link>
+                    </li>   
+                    <li className="navbar-item">
+                        <Link to="/RecruiterProfile" className="nav-link">My Profile</Link>
+                    </li>      
                     </Nav>
                     <Link to="/" className="nav-link">Logout</Link> 
                 </Navbar>   
