@@ -33,7 +33,8 @@ router.post('/',async(req,res) =>{
         })
         users.map((user) =>{
             if(app.email_applicant == user.email){
-                arr[idx].rating = user.rating
+                arr[idx].rating = user.rating,
+                arr[idx].rate = user.rate
                 return;
             }
         })

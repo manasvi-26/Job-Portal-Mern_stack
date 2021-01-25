@@ -42,14 +42,8 @@ export default class RecruiterEmployees extends Component {
         )
     }
 
-    calcRating = (idx) =>{
-        var list = this.state.emps[idx].rating
-        
-        
-        console.log(this.state.emps[idx].rating)
-       
-        var list = this.state.emps[idx].rating
-   
+    calcRating = (rate_req) =>{
+        var list = rate_req
         if(list.length == 0)return 0
         else{
             var sum = 0
@@ -70,7 +64,7 @@ export default class RecruiterEmployees extends Component {
         const curr = this.state.email
 
         var emails = rate_req?.map((obj) => obj.email)
-        if(emails.includes(curr)){
+        if(emails !== undefined && emails.includes(curr)){
             var value = prompt("Rate Again?(Y/N)")
             if(value == 'Y'){
                 value = prompt("Rate between(0,5)") - '0'
@@ -83,11 +77,13 @@ export default class RecruiterEmployees extends Component {
                     
                     const newObj = {
                         email : this.state.emps[idx].email,
-                        ratings : rate_req
+                        ratings : rate_req,
+                        rate : this.calcRating(rate_req)
                     }
                     axios.post("http://localhost:5000/editRating",newObj)
                          .then(response =>{
                             emps[idx].rating = rate_req
+                            emps[idx].rate = newObj.rate
                             this.setState({emps})
                         })
                 }
@@ -101,12 +97,14 @@ export default class RecruiterEmployees extends Component {
 
                 const newObj = {
                     email : this.state.emps[idx].email,
-                    ratings : rate_req
+                    ratings : rate_req,
+                    rate : this.calcRating(rate_req)
                 }
                 axios.post("http://localhost:5000/editRating",newObj)
                      .then(response =>{
                          console.log("HAHAJHAJA")
                         emps[idx].rating = rate_req
+                        emps[idx].rate = newObj.rate
                         this.setState({emps})
                     })
             }
@@ -155,7 +153,7 @@ export default class RecruiterEmployees extends Component {
 
                     <tbody>
                         {this.state.emps.map((emp,idx) =>{
-                            const rate = this.calcRating(idx)
+                            
 
                             return(
                                 <tr>
@@ -163,7 +161,7 @@ export default class RecruiterEmployees extends Component {
                                     <td>{this.state.emps[idx].join}</td>
                                     <td>{this.state.emps[idx].job_type}</td>
                                     <td>{this.state.emps[idx].title}</td>
-                                    <td>{rate}</td>
+                                    <td>{this.state.emps[idx].rate}</td>
                                     <td><Button variant="warning" className="btn btn-primary" value="edit" onClick={()=>this.edit(idx)}>Rate Employee</Button></td>
                                 </tr>
                             )

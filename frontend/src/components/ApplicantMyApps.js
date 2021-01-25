@@ -16,6 +16,8 @@ import FormControl from "react-bootstrap/FormControl";
 import { Col, Row } from "react-bootstrap";
 import Typography from "@material-ui/core/Typography";
 import SopModal from './Modal'
+import Table from 'react-bootstrap/Table'
+
 
 import moment from 'moment'
 
@@ -145,7 +147,7 @@ export default class ApplicantMyApps extends Component {
                 </Navbar>
                 <br /><br /><br /><br />
                 <h1 style={{ textAlign: "center" }}>My Applications</h1><br />
-                <table className="table table-striped">
+                <Table striped bordered hover  responsive="lg">
                 <thead>
                     <tr>
                         <th>Job Title</th>
@@ -184,7 +186,7 @@ export default class ApplicantMyApps extends Component {
                     )
                 })}
                 </tbody>
-                </table>
+                </Table>
             </div>
         )
     }
