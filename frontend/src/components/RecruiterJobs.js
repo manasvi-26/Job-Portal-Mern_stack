@@ -9,6 +9,8 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
+import Table from 'react-bootstrap/Table'
+
 
 import moment from 'moment'
 
@@ -148,7 +150,7 @@ export default class RecruiterJobs extends Component {
         </Navbar>
         <br/><br/><br/><br/>
 
-        <table className="table table-striped">
+        <Table striped bordered hover>
             <thead>
                 <tr>
                     <th>Job Title</th>
@@ -191,7 +193,7 @@ export default class RecruiterJobs extends Component {
                     )
                 })}
             </tbody>
-        </table>
+        </Table>
 
       </div>
 

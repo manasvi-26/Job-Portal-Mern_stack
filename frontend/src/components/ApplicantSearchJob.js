@@ -16,6 +16,7 @@ import FormControl from "react-bootstrap/FormControl";
 import { Col, Row } from "react-bootstrap";
 import Typography from "@material-ui/core/Typography";
 import SopModal from './Modal'
+import Table from 'react-bootstrap/Table'
 
 
 
@@ -290,7 +291,7 @@ export default class ApplicantSearchJob extends Component {
     
                 <br></br><br></br>
 
-                <table className="table table-striped">
+                <Table striped bordered hover  responsive="lg">
                     <thead>
                         <tr>
                             <th>Job Title</th>
@@ -333,7 +334,7 @@ export default class ApplicantSearchJob extends Component {
                             )
                         })}
                     </tbody>
-                </table>
+                </Table>
             </div>
 
 

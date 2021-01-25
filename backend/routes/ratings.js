@@ -8,6 +8,7 @@ router.post('/',(req,res) =>{
         if(err)console.log(err)
         else{
             user.rating = req.body.ratings
+            user.rate = req.body.rate
             user.save()
                 .then(user=>{
                     res.json(user)

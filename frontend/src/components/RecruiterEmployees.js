@@ -9,6 +9,8 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
+import Table from 'react-bootstrap/Table'
+
 
 export default class RecruiterEmployees extends Component {
 
@@ -139,7 +141,7 @@ export default class RecruiterEmployees extends Component {
                 <br></br><br></br><br></br>  
                 <h1 style={{ textAlign: "center" }}>View My Employees</h1><br />
                 <br></br><br></br>
-                <table className="table table-striped">
+                <Table striped bordered hover  responsive="lg">
                     <thead>
                         <tr>
                             <th>Employee Name</th>
@@ -169,7 +171,7 @@ export default class RecruiterEmployees extends Component {
                         })}
 
                     </tbody>
-                    </table>
+                    </Table>
             </div>
   
         )

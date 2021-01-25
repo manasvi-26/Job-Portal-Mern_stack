@@ -34,7 +34,6 @@ export default class ApplicantMyApps extends Component {
         if (newUser.type !== "Applicant") this.props.history.push("/");
 
         this.setState({ email: newUser.email });
-        console.log("hello?")
 
         axios.
             post("http://localhost:5000/applicant/MyApps",newUser)
@@ -48,6 +47,81 @@ export default class ApplicantMyApps extends Component {
                 console.log(error);
             });
     
+    }
+
+    rateCalc = (rate_req) =>{
+        
+        var list = rate_req
+   
+        if(list.length == 0)return 0
+        else{
+            var sum = 0
+            for(var i in list){
+                sum += list[i].value
+            }
+            return (Math.round(sum * 100.0 / (list.length)) / 100)
+        }
+    }
+
+    edit =(idx) =>{
+
+        let apps = [...this.state.apps]
+        let app_req = apps[idx]
+        let rate_req = [...app_req.rating]
+        let rate = app_req.rate
+
+        const curr = this.state.email
+
+        var emails = rate_req?.map((obj) => obj.email)
+        console.log("HHOO",app_req)
+
+        if(emails !== undefined && emails.includes(curr)){
+            var value = prompt("Rate Again?(Y/N)")
+            if(value == 'Y'){
+                value = prompt("Rate between(0,5)") - '0'
+                if([0,1,2,3,4,5].includes(value)){
+                    for(var i in rate_req){
+                        if(rate_req[i].email == curr){
+                            rate_req[i].value = value 
+                        }
+                    }
+                    
+                    const newObj = {
+                        email : this.state.apps[idx].rec_email,
+                        ratings : rate_req,
+                        rate : this.rateCalc(rate_req)
+                    }
+                    axios.post("http://localhost:5000/editRating",newObj)
+                         .then(response =>{
+                            apps[idx].rating = rate_req
+                            apps[idx].rate = newObj.rate
+                            this.setState({apps})
+                        })
+                }
+                else alert("Invalid Value!!")
+            }
+        }
+        else{
+            var value = prompt("Rate between(0,5)") - '0'
+            if([0,1,2,3,4,5].includes(value)){
+                rate_req.push({email : curr, value : value})
+
+                const newObj = {
+                    email : this.state.apps[idx].rec_email,
+                    ratings : rate_req,
+                    rate : this.rateCalc(rate_req)
+                }
+                axios.post("http://localhost:5000/editRating",newObj)
+                     .then(response =>{
+                        console.log("HAHAJHAJA")
+                        apps[idx].rating = rate_req
+                        apps[idx].rate = newObj.rate
+                        this.setState({apps})
+                    })
+            }
+            else alert("Invalid Value!!")
+        }
+        
     }
 
     render() {
@@ -80,6 +154,8 @@ export default class ApplicantMyApps extends Component {
                         <th>Recruiter</th>
                         <th>Application Status</th>
                         <th>Job status</th>
+                        <th>Rating of Recruiter</th>
+                        <th>Select</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,7 +164,7 @@ export default class ApplicantMyApps extends Component {
                     return(
                         <tr>
                             <td>{this.state.apps[idx].title}</td>
-                            <td>{moment(this.state.apps[idx]).join.format("DD/MM/YY")}</td>
+                            <td>{moment(this.state.apps[idx].join).format("DD/MM/YY")}</td>
                             <td>{this.state.apps[idx].salary}</td>
                             <td>{this.state.apps[idx].recruiter}</td>
                             
@@ -100,6 +176,9 @@ export default class ApplicantMyApps extends Component {
 
 
                             <td>{this.state.apps[idx].job_status}</td>
+                            <td>{this.state.apps[idx].rate}</td>
+                            <td><Button variant="warning" className="btn btn-primary" value="edit" onClick={()=>this.edit(idx)}>Rate Recruiter</Button></td>
+                            
 
                         </tr>
                     )

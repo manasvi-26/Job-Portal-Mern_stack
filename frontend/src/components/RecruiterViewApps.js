@@ -9,6 +9,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
+import Table from 'react-bootstrap/Table'
 
 import moment from 'moment'
 
@@ -136,44 +137,68 @@ export default class RecruiterViewApps extends Component {
 
                 <br></br><br></br>
 
-                <table className="table table-striped">
+                <Table striped bordered hover  responsive="lg">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Submitted Date</th>
                         <th>STATEMENT OF PURPOSE</th>
-                       
-             
+                        <th >Education</th>
+                        <th>Skills</th>
                         <th>Status</th>
                         <th>Shortlist/Accept</th>
                         <th>Reject</th>
                     </tr>
-                </thead>
 
+                   
+                </thead>
+               
                 <tbody>
+                
                     {this.state.apps.map((app,idx) =>{
                         const select = this.checkButtonType(app)
+                        
+                        var mx= 0
+                        if(this.state.apps[idx].education.length >this.state.apps[idx].skills.length )mx = this.state.apps[idx].education.length
+                        else mx= this.state.apps[idx].skills.length
+                        if(!mx)mx= 1
 
+                        var skills = this.state.apps[idx].skills.toString()
+                        console.log(mx)
+                        
                         return(
                             <tr>
-                            <td>{this.state.apps[idx].username}</td>
-                            <td>{moment(this.state.apps[idx].date).format("DD/MM/YY")}</td>
-                            <td>{this.state.apps[idx].sop}</td>
-                           
+                            <td >{this.state.apps[idx].username}</td>
+                            <td >{moment(this.state.apps[idx].date).format("DD/MM/YY")}</td>
+                            <td >{this.state.apps[idx].sop}</td>
                             
-                            {select === 'Applied' && <td><Button variant="outline-primary" value="edit">Applied</Button></td> }
-                            {select === 'Shortlisted' && <td><Button variant="outline-warning" value="edit">Shortlisted</Button></td> }
-                            {select === 'Accepted' && <td><Button variant="outline-success" value="edit">Accepted</Button></td> }
+                            {this.state.apps[idx].education.map((edu,idx) =>{
+                                return(
+                                    <div>
+                                    <td><b>Institute</b><br/>{edu.institute}</td>
+                                    <td><b>StartYear</b><br/>{edu.startyear}</td>
+                                    <td><b>End Year</b><br/>{edu.endyear}</td>
+                                    </div>
+                                )
+                            })}
+                            <td>{skills}</td>
+                            
 
 
-                            {select === 'Applied' &&  <td><Button variant="warning" className="btn btn-primary" value="edit" onClick={this.shortlist(idx)}>Shortlist</Button></td>}
-                            {select === 'Shortlisted' &&  <td><Button variant="success" className="btn btn-primary" value="edit" onClick={this.accept(idx)}>Accept</Button></td>}
                             
-                            {select !== 'Accepted' && <td><Button variant="danger" className="btn btn-primary" value="edit" onClick={this.reject(idx)}>Reject</Button></td>}
+                            {select === 'Applied' && <td ><Button variant="outline-primary" value="edit">Applied</Button></td> }
+                            {select === 'Shortlisted' && <td ><Button variant="outline-warning" value="edit">Shortlisted</Button></td> }
+                            {select === 'Accepted' && <td ><Button variant="outline-success" value="edit">Accepted</Button></td> }
+
+
+                            {select === 'Applied' &&  <td ><Button variant="warning" className="btn btn-primary" value="edit" onClick={this.shortlist(idx)}>Shortlist</Button></td>}
+                            {select === 'Shortlisted' &&  <td ><Button variant="success" className="btn btn-primary" value="edit" onClick={this.accept(idx)}>Accept</Button></td>}
+                            
+                            {select !== 'Accepted' && <td ><Button variant="danger" className="btn btn-primary" value="edit" onClick={this.reject(idx)}>Reject</Button></td>}
                             </tr>
                         )})}
                 </tbody>
-                </table>           
+                </Table>           
 
             </div>
         )

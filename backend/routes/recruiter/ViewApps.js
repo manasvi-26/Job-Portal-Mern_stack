@@ -33,10 +33,11 @@ router.post('/',(req,res) =>{
                             status: apps[idx].status,
                             _id : apps[idx]._id,
                             username : user.username,
-                            job_id : apps[idx].job_id
+                            job_id : apps[idx].job_id,
+                            education : user.education,
+                            skills : user.skills
                         }
                      
-
                         arr.push(obj)
                         if(idx == (apps.length-1))return res.json(arr)
                     })
