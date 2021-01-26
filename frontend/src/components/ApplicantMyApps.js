@@ -131,12 +131,12 @@ export default class ApplicantMyApps extends Component {
             <div>
                 <Navbar bg="dark" variant="dark">
                     <Nav className="mr-auto">
-                        <Link to="/SearchJob" className="navbar-brand">Search Job</Link>
+                        <Link to="/SearchJob" className="navbar-brand">My Applications</Link>
                         <li className="navbar-item">
                             <Link to="/ApplicantHome" className="nav-link">Home</Link>
                         </li>
                         <li className="navbar-item">
-                            <Link to="/ViewMyApps" className="nav-link">My Applications</Link>
+                            <Link to="/ApplicantHome" className="nav-link">Search Job</Link>
                         </li>
                         <li className="navbar-item">
                             <Link to="/ApplicantProfile" className="nav-link">Profile</Link>
@@ -175,6 +175,7 @@ export default class ApplicantMyApps extends Component {
                             {this.state.apps[idx].status === 'Shortlisted' && <td><Button variant="outline-warning" value="edit">Shortlisted</Button></td> }
                             {this.state.apps[idx].status === 'Accepted' && <td><Button variant="outline-success" value="edit">Accepted</Button></td> }
                             {this.state.apps[idx].status === 'Rejected' && <td><Button variant="outline-danger" value="edit">Rejected</Button></td> }
+                            {this.state.apps[idx].status === 'Deleted' && <td><Button variant="outline-dark" value="edit">Deleted</Button></td> }
 
 
                             <td>{this.state.apps[idx].job_status}</td>

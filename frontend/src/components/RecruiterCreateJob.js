@@ -73,8 +73,8 @@ export default class CreateJob extends Component {
         if (!username || !email || !title || !applicants || !positions || !type || !duration || !salary || !deadline || !skills)
             alert("Enter all the fields!")
         else if ((salary - '0') < 0 || !Number.isInteger(salary-'0')) alert('Salary field can take only positive integer values!!')
-        else if ((applicants) < 0 || !Number.isInteger(applicants)) alert('Applicants field can take only positive integer values!!')
-        else if ((positions) < 0 || !Number.isInteger(positions)) alert('Positions field can take only positive integer values!!')
+        else if ((applicants- '0') < 0 || !Number.isInteger(applicants- '0')) alert('Applicants field can take only positive integer values!!')
+        else if ((positions- '0') < 0 || !Number.isInteger(positions- '0')) alert('Positions field can take only positive integer values!!')
 
         else {
             axios.post("http://localhost:5000/recruiter/createJob", newJob).then(res => {
@@ -151,17 +151,17 @@ export default class CreateJob extends Component {
 
                         <Form.Group as={Col} controlId="formGridState">
                             <Form.Label>Max Applicants</Form.Label>
-                            <Form.Control type="text" name="applicants" placeholder="Enter max applicants" onChange={this.onchange} value={this.state.applicants} />
+                            <Form.Control type="number" name="applicants" min={1} placeholder="Enter max applicants" onChange={this.onchange} value={this.state.applicants} />
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="formGridZip">
                             <Form.Label>Max Postions</Form.Label>
-                            <Form.Control type="text" name="positions" placeholder="Enter max positions" onChange={this.onchange} value={this.state.positions} />
+                            <Form.Control type="number" name="positions" min={1} placeholder="Enter max positions" onChange={this.onchange} value={this.state.positions} />
                         </Form.Group>
                     </Form.Row>
                     <Form.Group controlId="formGridCity">
                         <Form.Label>Salary (per month)</Form.Label>
-                        <Form.Control type="text" name="salary" placeholder="Enter salary" onChange={this.onchange} value={this.state.salary} />
+                        <Form.Control type="number" step = "500" name="salary" min={0} placeholder="Enter salary" onChange={this.onchange} value={this.state.salary} />
                     </Form.Group>
                     <Form.Group controlId="formGridCity">
                         <Form.Label>Deadline</Form.Label>

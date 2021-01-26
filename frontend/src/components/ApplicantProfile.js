@@ -13,9 +13,7 @@ import Form from 'react-bootstrap/Form'
 import axios from 'axios';
 import Button from 'react-bootstrap/Button'
 import { Col, Row } from "react-bootstrap";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-
+import Resizer from 'react-image-file-resizer';
 
 export default class ApplicantProfile extends Component {
 
@@ -24,7 +22,9 @@ export default class ApplicantProfile extends Component {
             skills :[],
             email : "",
             education:[],
-            rate : ""
+            rate : "",
+            picture : "",
+            b64 : ""
         }
 
     componentDidMount() {
@@ -42,6 +42,8 @@ export default class ApplicantProfile extends Component {
                 this.setState({ education: response.data.education });
                 this.setState({ rate: response.data.rate });
                 this.setState({ skills: response.data.skills });
+                this.setState({ b64: response.data.picture });
+
             })
             .catch(function (error) {
                 console.log(error);
@@ -66,6 +68,12 @@ export default class ApplicantProfile extends Component {
                 alert("Start yearcant be empty!!")
                 return false
             }
+            if(education[i].endyear !== ''){
+                if(education[i].startyear > education[i].endyear){
+                    alert("Start Year cant be after End Year in Education Field!")
+                    return false
+                }
+            }
         } 
         const skills = newUser.skills
         for(var i in skills){
@@ -76,6 +84,14 @@ export default class ApplicantProfile extends Component {
             }
 
         }
+        const endyear = newUser.endyear
+        const startyear = newUser.startyear
+
+        console.log(endyear)
+        console.log(startyear)
+
+
+       
         return true
     }
 
@@ -167,6 +183,46 @@ export default class ApplicantProfile extends Component {
             const newItem = {institute: "",startyear: "", endyear:"" }
             this.setState({education : [...this.state.education,newItem]})
     }
+//***********************************************PICTURE CHANGE****************************************************************************************************************/}
+
+    pictureChange = e =>{
+        console.log(e.target.files[0])
+        this.setState({picture : e.target.files[0]})
+    }
+
+    fileUpload = async(e) =>{
+        if(this.state.picture === ""){alert("No file has been Chosen!!")
+            return
+        }
+        const b64 = await this.resizeFile(this.state.picture)
+        console.log(b64)
+
+        const newUser={
+            email : this.state.email,
+            b64 : b64
+        }
+
+        axios
+            .post("http://localhost:5000/user/picture", newUser)
+            .then(response =>{
+                    alert("Changes saved!!")
+                    this.setState({ b64 : response.data.picture });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    resizeFile = (file) => {
+        return new Promise(resolve => {
+            Resizer.imageFileResizer(file , 250 , 250 , 'JPEG' , 100 , 0 , uri => {
+                resolve(uri);
+            } , 
+            'base64'
+            );
+        })
+    }
+
 
 //***********************************************DISPLAY****************************************************************************************************************/}
 
@@ -200,6 +256,19 @@ export default class ApplicantProfile extends Component {
 
 
                 <Form>
+                    
+                    <Row>
+                    <div style={{width:"400px" ,margin:"0 auto"}}>
+                        <Form.Label><h3>Profile Picture</h3></Form.Label>
+                        <Form inline>
+                        {this.state.b64 !== '' ? (<img src={this.state.b64}/>)  : ""}
+                        <RB.FormControl type="file" onChange ={this.pictureChange} defaultValue = {this.state.picture}/>
+                        <Button variant="info" className="btn btn-primary" value="edit" onClick={this.fileUpload}>Upload Picture</Button>
+                        </Form>
+                    </div>
+                    </Row>
+                    <br></br><br></br><br></br>
+                    
                     <Row>
                         <Col>
                         <Form.Label><h3>User Name</h3></Form.Label>
@@ -212,14 +281,14 @@ export default class ApplicantProfile extends Component {
                         <Col>
                         <Form.Label><h3>Email address</h3></Form.Label>
                         <Form inline>
-                        <RB.FormControl  type="text" label="email" defaultValue={this.state.email}/>
+                        <RB.FormControl  type="text" label="email" readonly="readonly" defaultValue={this.state.email}/>
                         </Form>
                         </Col>
                         <Col>
                         <Form.Label><h3>Rating</h3></Form.Label>
                         <Form inline>
                         
-                        <RB.FormControl  type="text" label="rating" defaultValue={this.state.rate}/>
+                        <RB.FormControl  type="text" label="rating" readonly="readonly" defaultValue={this.state.rate}/>
                         </Form>
                         </Col>
                     </Row>

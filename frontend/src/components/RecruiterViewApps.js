@@ -23,8 +23,8 @@ export default class RecruiterViewApps extends Component {
         email : "",
         job_id : "",
         apps : [],
-        sort: "",
-        order: ""
+        sort: "username",
+        order: "ascending"
     }
 
     componentDidMount(){

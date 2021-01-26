@@ -8,11 +8,12 @@ const Application =  require('../../models/Application');
 
 router.post('/',(req,res) =>{ 
     
+    console.log("I GOT THIS DELETED JOB")
 
     Job.findOne({_id : req.body._id},function(err,job){
         if(err) console.log(err)
 
-        job.state = "Inactive"
+        job.state = "Deleted"
         job.save()
             .then(job =>{
                 console.log(job)
@@ -23,7 +24,7 @@ router.post('/',(req,res) =>{
     })
 
     var filter = {job_id : req.body._id}
-    var newValue = {$set : {status : "Rejected"}}
+    var newValue = {$set : {status : "Deleted"}}
 
     Application.updateMany(filter,newValue,function(err,res){
         if(err)console.log(err)

@@ -69,18 +69,23 @@ export default class RecruiterJobs extends Component {
         if(!isNaN(value) && value){
             
             const jobs = [...this.state.jobs]
-            jobs[idx].applicants = value
-            const obj = jobs[idx]
-            axios
-                .post("http://localhost:5000/recruiter/editJob",obj)
-                .then(response => {
-                    this.setState({jobs :jobs});
-                    alert("Changes Saved :)")
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            
+            if(jobs[idx].curr_applicants > value){
+                alert("Cant change value to less than current number of applicants")
+            }
+            else if(value === '0') alert("Cant change value to 0 ")
+            else{
+                jobs[idx].applicants = value
+                const obj = jobs[idx]
+                axios
+                    .post("http://localhost:5000/recruiter/editJob",obj)
+                    .then(response => {
+                        this.setState({jobs :jobs});
+                        alert("Changes Saved :)")
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
         }
         else alert("Invalid value")
     }
@@ -91,18 +96,23 @@ export default class RecruiterJobs extends Component {
         
         if(!isNaN(value) && value){    
             const jobs = [...this.state.jobs]
-            jobs[idx].positions = value
-            const obj = jobs[idx]
-            axios
-                .post("http://localhost:5000/recruiter/editJob",obj)
-                .then(response => {
-                    this.setState({jobs :jobs});
-                    alert("Changes Saved :)")
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            
+            if(jobs[idx].curr_positions > value){
+                alert("Cant change value to less than current number of positions")
+            }
+            else if(value === '0') alert("Cant change value to 0 ")
+            else{
+                jobs[idx].positions = value
+                const obj = jobs[idx]
+                axios
+                    .post("http://localhost:5000/recruiter/editJob",obj)
+                    .then(response => {
+                        this.setState({jobs :jobs});
+                        alert("Changes Saved :)")
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
         }
         else alert("Invalid value")
     }
@@ -111,16 +121,16 @@ export default class RecruiterJobs extends Component {
     delete = (idx) => () => {
         console.log(idx)
         const newJobs = [...this.state.jobs]
-        newJobs.splice(idx, 1)
-        console.log(newJobs)
-        this.setState({ jobs: newJobs })
-
-        
         const obj = newJobs[idx]
+
+        console.log("this job should be deleted ",obj)
 
         axios
         .post("http://localhost:5000/recruiter/deleteJob",obj)
         .then(response => {
+            newJobs.splice(idx, 1)
+            console.log(newJobs)
+            this.setState({ jobs: newJobs })
             alert("Job deleted")
         })
         .catch(function (error) {

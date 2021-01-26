@@ -13,6 +13,23 @@ router.post('/',(req,res) =>{
        
 })
 
+router.post('/picture',(req,res) =>{ 
+    console.log("in")
+    User.findOne({email : req.body.email},function(err,user){
+        user.picture = req.body.b64
+        user.save()
+            .then(user =>{
+                console.log(user)
+                res.json(user)
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    })
+       
+})
+
+
 module.exports = router;
 
 

@@ -13,6 +13,7 @@ router.post('/',(req,res) =>{
         job.positions = req.body.positions,
         job.deadline = req.body.deadline 
 
+        if(job.positions === job.curr_positions)job.state = "Inactive"
         job.save()
             .then(job =>{
                 console.log(job)

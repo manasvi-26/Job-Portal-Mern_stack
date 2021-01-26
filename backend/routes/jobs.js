@@ -5,7 +5,7 @@ const Job = require('../models/Job');
 //Get all active Jobs
 
 router.route("/").get(function(req, res) {
-    Job.find(function(err, jobs) {
+    Job.find({state : {$ne : "Deleted"}},function(err, jobs) {
         if (err)
             console.log(err);
         else {

@@ -50,6 +50,10 @@ const UserSchema = new Schema({
     },
     bio :{
       type:String
+    },
+    picture : {
+      type: String,
+      default : ""
     }
 });
 

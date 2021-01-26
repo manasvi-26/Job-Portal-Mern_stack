@@ -19,8 +19,8 @@ export default class RecruiterEmployees extends Component {
         emps : [],
         email: "",
         username : "",
-        sort : "",
-        order:""
+        sort : "username",
+        order:"ascending"
     }
 
     componentDidMount(){

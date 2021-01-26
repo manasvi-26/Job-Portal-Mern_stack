@@ -197,6 +197,8 @@ export default class ApplicantSearchJob extends Component {
         this.setState({
             show : !this.state.show
         })
+
+        window.location.reload()
        
     }
 
@@ -394,7 +396,7 @@ export default class ApplicantSearchJob extends Component {
                                     <td>{job.type}</td>
                                     <td>{moment(job.deadline).format("DD/MM/YY")}</td>
                                     <td>{job.rate}</td>
-                                    {select === 'inactive' && <td><Button variant="danger" className="btn btn-primary" value="edit">INACTIVE JOB</Button></td>}
+                                    {select === 'inactive' && <td><Button variant="dark" className="btn btn-primary" value="edit">INACTIVE JOB</Button></td>}
                                     {select === 'applied' && <td><Button variant="success" className="btn btn-primary" value="edit">Applied</Button></td>}
                                     {select === 'full' &&  <td><Button variant="info" className="btn btn-primary" value="edit">Full</Button></td>}
 
