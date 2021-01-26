@@ -34,17 +34,16 @@ export default class ApplicantSearchJob extends Component {
         sort: "",
         order: "",
         show : false,
-        filter: {
-            salary: "",
-            type: "",
-            duration: ""
-        },
         sop : "",
         myApps : [],
         curr_job :{
             email : "",
             job_id: ""
-        }
+        },
+        filterJob : "",
+        filterDuration : "",
+        SalaryMax : "",
+        SalaryMin : ""
     }
 
     componentDidMount() {
@@ -205,6 +204,7 @@ export default class ApplicantSearchJob extends Component {
         //3 types : apply , full , applied
 
         //1.check if applied:
+        if(job.state == 'Inactive')return "inactive"
         var AppsList = this.state.myApps.map((app)=>{return app.job_id})
         
         if(AppsList.includes(job._id)) return "applied"
@@ -226,6 +226,9 @@ export default class ApplicantSearchJob extends Component {
                 case "duration":
                     copy.sort((a, b) => (a.duration > b.duration) ? 1 : -1);
                     break;
+                case "rating":
+                    copy.sort((a, b) => (a.rate > b.rate) ? 1 : -1);
+                    break;
             }
         }
         else if (this.state.order === "descending") {
@@ -236,10 +239,26 @@ export default class ApplicantSearchJob extends Component {
                 case "duration":
                     copy.sort((a, b) => (a.duration > b.duration) ? -1 : 1);
                     break;
+                case "rating":
+                    copy.sort((a, b) => (a.rate > b.rate) ? -1 : 1);
+                    break;
             }
         }
 
         this.setState({ jobs: copy })
+    }
+
+    onchange = event => {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+
+    minChange = e =>{
+        this.setState({ minSalary: e.target.value })
+    }
+    maxChange = e =>{
+        this.setState({ maxSalary: e.target.value })
     }
 
 
@@ -263,7 +282,7 @@ export default class ApplicantSearchJob extends Component {
                     <Link to="/" className="nav-link">Logout</Link>
                 </Navbar>
                 <br /><br /><br /><br />
-                <h1 style={{ textAlign: "center" }}>Search Active Jobs</h1><br />
+                <h1 style={{ textAlign: "center" }}>View Job Listings</h1><br /><br/>
 
                 <Form>
                 <Row>
@@ -274,10 +293,14 @@ export default class ApplicantSearchJob extends Component {
                     </Form>
                     </Col>
                     <Col>
+                    <Form.Label>Sort you Job Searches</Form.Label>
+
                     <Form inline>
                         <Form.Control as="select" className="mr-sm-2" defaultValue={this.state.sort} onClick={this.sortChange}>
                             <option value="salary">salary</option>
                             <option value="duration">duration</option>
+                            <option value="rating">rating</option>
+
                         </Form.Control>
                         <Form.Control as="select" className="mr-sm-2" defaultValue={this.state.order} onClick={this.orderChange} >
                             <option value="ascending">ascending</option>
@@ -290,6 +313,42 @@ export default class ApplicantSearchJob extends Component {
                 </Form>
     
                 <br></br><br></br>
+                <Form>
+                    <Row>
+                        <Col>
+                        <Form.Label>Filter based on Duration (in months)</Form.Label>
+                        <Form.Control as="select" name="filterDuration" defaultValue="" onChange={this.onchange} value={this.state.duration}> 
+                            <option></option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                        </Form.Control>
+                        </Col>
+                        <Col>
+                        <Form.Label>Filter based on Job type</Form.Label>
+                        <Form.Control as="select" name="filterJob" defaultValue="Full-time" defaultValue="" onChange={this.onchange} value={this.state.type} >
+                                <option></option>
+                                <option>Full-time</option>
+                                <option>Part-time</option>
+                                <option>Work from Home</option>
+                            </Form.Control>
+                        </Col>
+                        <Col>
+                        <Form.Label>Filter based on Salary</Form.Label>
+                        <Form inline>
+                            <FormControl type="text" placeholder="Minimum Salary" className="mr-sm-2" onChange={this.minChange} />
+                            <FormControl type="text" placeholder="Maximum Salary" className="mr-sm-2" onChange={this.maxChange} />
+                           
+                        </Form>
+                        </Col>
+                    </Row>
+                </Form>
+
+                <br></br><br></br>
 
                 <Table striped bordered hover  responsive="lg">
                     <thead>
@@ -298,7 +357,9 @@ export default class ApplicantSearchJob extends Component {
                             <th>Recruiter Name</th>
                             <th>Salary</th>
                             <th>Duration(in Months)</th>
+                            <th>Job Type</th>
                             <th>Deadline</th>
+                            <th>Rating of Job</th>
                             <th>Select</th>
                         </tr>
                     </thead>
@@ -309,10 +370,18 @@ export default class ApplicantSearchJob extends Component {
                             if (moment(today).isAfter(job.deadline)) {
                                 return null;
                             }
-                            const { search } = this.state;
+                            const { search,filterJob, filterDuration,maxSalary,minSalary } = this.state;
                             if (search !== '' && job.title.toLowerCase().indexOf(search.toLowerCase()) === -1) {
                                 return null
                             }
+
+                            if(filterJob !== '' && job.type !== filterJob)return null
+                            if(filterDuration !== '' && job.duration >= filterDuration)return null
+                            if(maxSalary !== '' && job.salary > maxSalary)return null
+                            if(minSalary !== '' && job.salary < minSalary)return null
+
+
+                            
                             const select = this.checkButtonType(job)
 
 
@@ -322,8 +391,10 @@ export default class ApplicantSearchJob extends Component {
                                     <td>{job.username}</td>
                                     <td>{job.salary}</td>
                                     <td>{job.duration}</td>
+                                    <td>{job.type}</td>
                                     <td>{moment(job.deadline).format("DD/MM/YY")}</td>
-
+                                    <td>{job.rate}</td>
+                                    {select === 'inactive' && <td><Button variant="danger" className="btn btn-primary" value="edit">INACTIVE JOB</Button></td>}
                                     {select === 'applied' && <td><Button variant="success" className="btn btn-primary" value="edit">Applied</Button></td>}
                                     {select === 'full' &&  <td><Button variant="info" className="btn btn-primary" value="edit">Full</Button></td>}
 

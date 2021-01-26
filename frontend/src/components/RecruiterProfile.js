@@ -165,12 +165,6 @@ export default class RecruiterProfile extends Component {
                         <Form.Control type="text" value={this.state.email} className="mr-sm-2"  />
                     </Form>
                     </Col>
-                    <Col>
-                    <Form.Label>Rating</Form.Label>
-                    <Form inline>
-                        <Form.Control type="text" value={this.state.rate} className="mr-sm-2"  />
-                    </Form>
-                    </Col>
                 </Row>
                 </Form>
                 <br></br><br></br>

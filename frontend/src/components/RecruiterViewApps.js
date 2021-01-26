@@ -12,6 +12,7 @@ import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
 
 import moment from 'moment'
+import Form from 'react-bootstrap/Form'
 
 
 import RecruiterJobs from './RecruiterJobs'
@@ -21,7 +22,9 @@ export default class RecruiterViewApps extends Component {
     state = {
         email : "",
         job_id : "",
-        apps : []
+        apps : [],
+        sort: "",
+        order: ""
     }
 
     componentDidMount(){
@@ -107,9 +110,6 @@ export default class RecruiterViewApps extends Component {
         .catch(function (error) {
             console.log(error);
         });
-
- 
-
     }
 
     reject = (idx)=>()=>{
@@ -128,6 +128,60 @@ export default class RecruiterViewApps extends Component {
         });
     }
 
+    sort = e => {
+
+        const copy = this.state.apps
+
+        if (this.state.order === "ascending") {
+            switch (this.state.sort) {
+                case "rating":
+                    copy.sort((a, b) => (a.rate > b.rate) ? 1 : -1);
+                    
+                    break;
+                case "date":
+                    copy.sort((a, b) => (a.date > b.date) ? 1 : -1);
+                    break;
+                case "username":
+                    copy.sort((a, b) => (a.username > b.username) ? 1 : -1);
+                    console.log("heyyy")
+                    break;
+            }
+        }
+        else if (this.state.order === "descending") {
+            switch (this.state.sort) {
+                case "username":
+                    copy.sort((a, b) => (a.username > b.username) ? -1 : 1);
+                    console.log("heyyy")
+                    break;
+                case "date":
+                    copy.sort((a, b) => (a.date > b.date) ? -1 : 1);
+                    break;
+                case "rating":
+                    copy.sort((a, b) => (a.rate > b.rate) ? -1 : 1);
+                    break;
+            }
+        }
+
+        this.setState({ apps: copy })
+    }
+
+    sortChange = e => {
+        console.log("value is for sort", e.target.value)
+
+        this.setState({ sort: e.target.value })
+        console.log(this.state.sort)
+
+    }
+
+    orderChange = e => {
+        console.log("value is for order", e.target.value)
+
+        this.setState({ order: e.target.value })
+        console.log(this.state.order)
+    }
+
+
+
 
 
     render(){
@@ -135,8 +189,21 @@ export default class RecruiterViewApps extends Component {
             <div>
                 <Button variant="success" size="lg" onClick={this.goBack}>GO BACK TO JOB LISTINGS</Button>
 
-                <br></br><br></br>
+                <br></br><br></br> <br></br> 
 
+                <Form inline>
+                    <Form.Control as="select" className="mr-sm-2" defaultValue={this.state.sort} onClick={this.sortChange}>
+                        <option value="username">Applicant Name</option>
+                        <option value="date">Date of Application</option>
+                        <option value="rating">Applicant Rating</option>
+                    </Form.Control>
+                    <Form.Control as="select" className="mr-sm-2" defaultValue={this.state.order} onClick={this.orderChange} >
+                        <option value="ascending">ascending</option>
+                        <option value="descending">descending</option>
+                    </Form.Control>
+                    <Button style={{ marginRight: 15 }} onClick={this.sort} variant="outline-info">Sort</Button>
+                </Form>
+                 <br></br><br></br><br></br>   
                 <Table striped bordered hover  responsive="lg">
                 <thead>
                     <tr>
@@ -145,6 +212,7 @@ export default class RecruiterViewApps extends Component {
                         <th>STATEMENT OF PURPOSE</th>
                         <th >Education</th>
                         <th>Skills</th>
+                        <th>Applicant Rating</th>
                         <th>Status</th>
                         <th>Shortlist/Accept</th>
                         <th>Reject</th>
@@ -170,7 +238,7 @@ export default class RecruiterViewApps extends Component {
                             <tr>
                             <td >{this.state.apps[idx].username}</td>
                             <td >{moment(this.state.apps[idx].date).format("DD/MM/YY")}</td>
-                            <td >{this.state.apps[idx].sop}</td>
+                            <td>{this.state.apps[idx].sop}</td>
                             
                             {this.state.apps[idx].education.length!==0 && 
                             this.state.apps[idx].education.map((edu,idx) =>{
@@ -186,7 +254,7 @@ export default class RecruiterViewApps extends Component {
                             <td>{skills===''? "Not Filled": skills}</td>
                             
 
-
+                            <td>{this.state.apps[idx].rate}</td>
                             
                             {select === 'Applied' && <td ><Button variant="outline-primary" value="edit">Applied</Button></td> }
                             {select === 'Shortlisted' && <td ><Button variant="outline-warning" value="edit">Shortlisted</Button></td> }

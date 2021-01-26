@@ -10,6 +10,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table'
+import Form from "react-bootstrap/Form";
 
 
 export default class RecruiterEmployees extends Component {
@@ -17,7 +18,9 @@ export default class RecruiterEmployees extends Component {
     state ={
         emps : [],
         email: "",
-        username : ""
+        username : "",
+        sort : "",
+        order:""
     }
 
     componentDidMount(){
@@ -112,6 +115,63 @@ export default class RecruiterEmployees extends Component {
         }
     }
 
+    sort = e => {
+
+        const copy = this.state.emps
+
+        if (this.state.order === "ascending") {
+            switch (this.state.sort) {
+                case "rating":
+                    copy.sort((a, b) => (a.rate > b.rate) ? 1 : -1);
+                    
+                    break;
+                case "join":
+                    copy.sort((a, b) => (a.join > b.join) ? 1 : -1);
+                    break;
+                case "username":
+                    copy.sort((a, b) => (a.username > b.username) ? 1 : -1);
+                    break;
+                case "title":
+                    copy.sort((a, b) => (a.title > b.title) ? 1 : -1);
+                    break;    
+            }
+        }
+        else if (this.state.order === "descending") {
+            switch (this.state.sort) {
+                case "username":
+                    copy.sort((a, b) => (a.username > b.username) ? -1 : 1);
+                    break;
+                case "join":
+                    copy.sort((a, b) => (a.join > b.join) ? -1 : 1);
+                    break;
+                case "rating":
+                    copy.sort((a, b) => (a.rate > b.rate) ? -1 : 1);
+                    break;
+
+                case "title":
+                    copy.sort((a, b) => (a.title > b.title) ? -1 : 1);
+                    break;
+            }
+        }
+
+        this.setState({ emps: copy })
+    }
+
+    sortChange = e => {
+        console.log("value is for sort", e.target.value)
+
+        this.setState({ sort: e.target.value })
+        console.log(this.state.sort)
+
+    }
+
+    orderChange = e => {
+        console.log("value is for order", e.target.value)
+
+        this.setState({ order: e.target.value })
+        console.log(this.state.order)
+    }
+
     render() {
         
         return (
@@ -139,6 +199,22 @@ export default class RecruiterEmployees extends Component {
                 <br></br><br></br><br></br>  
                 <h1 style={{ textAlign: "center" }}>View My Employees</h1><br />
                 <br></br><br></br>
+                
+                <Form inline>
+                    <Form.Control as="select" className="mr-sm-2" defaultValue={this.state.sort} onClick={this.sortChange}>
+                        <option value="username">Applicant Name</option>
+                        <option value="join">Date of Joining</option>
+                        <option value="title">Job title</option>
+                        <option value="rating">Applicant rating</option>
+                    </Form.Control>
+                    <Form.Control as="select" className="mr-sm-2" defaultValue={this.state.order} onClick={this.orderChange} >
+                        <option value="ascending">ascending</option>
+                        <option value="descending">descending</option>
+                    </Form.Control>
+                    <Button style={{ marginRight: 15 }} onClick={this.sort} variant="outline-info">Sort</Button>
+                </Form>
+                 <br></br><br></br><br></br>   
+                
                 <Table striped bordered hover  responsive="lg">
                     <thead>
                         <tr>

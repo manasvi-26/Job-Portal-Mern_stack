@@ -72,7 +72,10 @@ export default class CreateJob extends Component {
         console.log()
         if (!username || !email || !title || !applicants || !positions || !type || !duration || !salary || !deadline || !skills)
             alert("Enter all the fields!")
-        else if (salary - '0' < 0) alert('Salary cant be negative!!')
+        else if ((salary - '0') < 0 || !Number.isInteger(salary-'0')) alert('Salary field can take only positive integer values!!')
+        else if ((applicants) < 0 || !Number.isInteger(applicants)) alert('Applicants field can take only positive integer values!!')
+        else if ((positions) < 0 || !Number.isInteger(positions)) alert('Positions field can take only positive integer values!!')
+
         else {
             axios.post("http://localhost:5000/recruiter/createJob", newJob).then(res => {
                 alert("Created Job")
@@ -84,6 +87,7 @@ export default class CreateJob extends Component {
             applicants: "",
             positions: "",
             type: "Full-time",
+      
             duration: "1",
             salary: "",
             deadline: "",
@@ -135,14 +139,13 @@ export default class CreateJob extends Component {
                         <Form.Group as={Col} controlId="formGridState">
                             <Form.Label>Duration (in months)</Form.Label>
                             <Form.Control as="select" name="duration" defaultValue="1" onChange={this.onchange} value={this.state.duration}>
-
+                                <option>0</option>
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
                                 <option>4</option>
                                 <option>5</option>
                                 <option>6</option>
-                                <option>7</option>
                             </Form.Control>
                         </Form.Group>
 

@@ -155,6 +155,8 @@ export default class RecruiterJobs extends Component {
             <Link to="/" className="nav-link">Logout</Link>    
         </Navbar>
         <br/><br/><br/><br/>
+        <h1 style={{ textAlign: "center" }}>View Job Listings</h1><br /><br/>
+
 
         <Table striped bordered hover>
             <thead>

@@ -35,7 +35,8 @@ router.post('/',(req,res) =>{
                             username : user.username,
                             job_id : apps[idx].job_id,
                             education : user.education,
-                            skills : user.skills
+                            skills : user.skills,
+                            rate : user.rate
                         }
                      
                         arr.push(obj)
