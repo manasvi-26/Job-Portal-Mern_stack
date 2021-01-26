@@ -176,6 +176,7 @@ export default class RecruiterJobs extends Component {
                     <th>Deadline</th>
                     <th>Max Applicants</th>
                     <th>Max Positions</th>
+                    <th>Remaining Positions</th>
                     <th>Edit</th>
                     <th>Delete</th>
                     <th>View Applications</th>
@@ -190,6 +191,8 @@ export default class RecruiterJobs extends Component {
                         <td>{moment(this.state.jobs[idx].deadline).format("DD/MM/YY")}</td>
                         <td>{this.state.jobs[idx].applicants}</td>
                         <td>{this.state.jobs[idx].positions}</td>
+                        <td>{this.state.jobs[idx].positions - this.state.jobs[idx].curr_positions}</td>
+
                         <td>
                         <DropdownButton variant="warning" as={ButtonGroup} title="Edit">
                         <Dropdown.Item>
