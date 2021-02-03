@@ -261,7 +261,7 @@ export default class ApplicantProfile extends Component {
                     <div style={{width:"400px" ,margin:"0 auto"}}>
                         <Form.Label><h3>Profile Picture</h3></Form.Label>
                         <Form inline>
-                        {this.state.b64 !== '' ? (<img src={this.state.b64}/>)  : ""}
+                        {this.state.b64 !== '' ? (<img src={this.state.b64}/>)  : (<textarea  rows="10" cols="20"></textarea>)}
                         <RB.FormControl type="file" onChange ={this.pictureChange} defaultValue = {this.state.picture}/>
                         <Button variant="info" className="btn btn-primary" value="edit" onClick={this.fileUpload}>Upload Picture</Button>
                         </Form>
